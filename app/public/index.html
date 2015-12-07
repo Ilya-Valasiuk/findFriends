@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Friends</title>
+	<meta charset="utf-8">
+    <base href="/">
+    <!-- Bootstrap -->
+    <link href="/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="/assets/css/app.css" rel="stylesheet">
+	<!-- scripts -->
+	<script type="text/javascript" src="/bower_components/angular/angular.js"></script>
+	<script type="text/javascript" src="/bower_components/angular-route/angular-route.js"></script>
+	<script type="text/javascript" src="/public/app.module.js"></script>
+
+	<!-- Main module -->
+	<script type="text/javascript" src="/components/main/mainController.js"></script>
+
+	<!-- Login module -->
+	<script type="text/javascript" src="/components/login/loginController.js"></script>
+
+	<!-- MAP module -->
+	<script type="text/javascript" src="/components/map/mapController.js"></script>
+	
+	<!-- Sign up module -->
+	<script type="text/javascript" src="/components/signup/signupController.js"></script>
+	<script type="text/javascript" src="/components/signup/inputFile.js"></script>
+
+	<!-- Shared -->
+	<script type="text/javascript" src="/shared/user/userService.js"></script>
+	<script type="text/javascript" src="/shared/sessionService.js"></script>
+	<script type="text/javascript" src="/shared/httpConfig.js"></script>
+
+	<script type="text/javascript" src="/public/app.routes.js"></script>
+
+	<!-- end scripts -->
+</head>
+<body ng-app="FriendsApp">	
+	<div class="container">
+		<div ng-view></div>
+	</div>
+</body>
+</html>

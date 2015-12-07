@@ -1,0 +1,14 @@
+<form name="loginForm" class="loginForm" ng-submit="submitForm()">
+	<h2 class="text-center">Login</h2>
+  <div class="form-group">
+    <label for="emailForm">Email address</label>
+    <input type="email" class="form-control" name="email" data-ng-model="user.email" placeholder="Email" required="">
+  </div>
+  <div class="form-group">
+    <label for="passwordForm">Password</label>
+    <input type="password" class="form-control" name="password" data-ng-model="user.password" placeholder="Password" required="">
+  </div>
+  <button class="btn btn-default">Login</button>
+  <button class="btn btn-default">Forgot password</button>
+  <a href="/signup"><button class="btn btn-success">Sign up</button></a>
+</form>

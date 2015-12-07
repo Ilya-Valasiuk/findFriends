@@ -1,0 +1,32 @@
+<form name="signUpForm" class="signUpForm" ng-submit="submit()">
+	<h2 class="text-center">Registration</h2>
+  <div class="form-group" data-ng-class="{'has-error': (signUpForm.$submitted && signUpForm.name.$error.required) || (signUpForm.name.$touched && signUpForm.name.$error.required)}">
+    <label for="name" class="control-label">First Name</label>
+    <input type="text" class="form-control" name="name" placeholder="First Name" data-ng-model="user.name" required="">
+  </div>
+  <div class="form-group" data-ng-class="{'has-error': (signUpForm.$submitted && signUpForm.lastname.$error.required) || (signUpForm.lastname.$touched && signUpForm.lastname.$error.required)}">
+    <label for="lastname" class="control-label">Last Name</label>
+    <input type="text" class="form-control" name="lastname" placeholder="Last Name" data-ng-model="user.lastname" required="">
+  </div>
+  <div class="form-group" data-ng-class="{'has-error': (signUpForm.$submitted && signUpForm.email.$error.required) || (signUpForm.email.$touched && signUpForm.email.$error.required)}">
+    <label for="email" class="control-label">Email address</label>
+    <input type="email" class="form-control" name="email" placeholder="Email" data-ng-model="user.email" required="">
+  </div>
+  <div class="form-group" data-ng-class="{'has-error': (signUpForm.$submitted && signUpForm.password.$error.required) || (signUpForm.password.$touched && signUpForm.password.$error.required) || (signUpForm.password.$modelValue !== signUpForm.confirmpassword.$modelValue)}">
+    <label for="password" class="control-label">Password</label>
+    <input type="password" class="form-control" name="password" placeholder="Password" data-ng-model="user.password" required="">
+  </div>
+  <div class="form-group" data-ng-class="{'has-error': (signUpForm.$submitted && signUpForm.confirmpassword.$error.required) || (signUpForm.confirmpassword.$touched && signUpForm.confirmpassword.$error.required) || (signUpForm.password.$modelValue !== signUpForm.confirmpassword.$modelValue)}">
+    <label for="confirmpassword" class="control-label">Confirm Password</label>
+    <input type="password" class="form-control" name="confirmpassword" placeholder="Password" data-ng-model="confirmpassword" required="">
+  </div>
+  <div class="form-group" data-ng-class="{'has-error': (signUpForm.profileimage.$error.empty && signUpForm.profileimage.$touched)}">
+    <label for="profileimage" class="control-label">Profile Image</label>
+    <span data-input-file></span>
+    <span class="previewImage"></span>
+    <p class="help-block">Choose any image with you.</p>
+  </div>
+  <button type="submit" class="btn btn-success">Save</button>
+  <button class="btn btn-success" ng-click="click()">Save</button>
+  <a href="/"><button class="btn btn-danger">Cancel</button></a>
+</form>
