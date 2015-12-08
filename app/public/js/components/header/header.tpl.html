@@ -1,0 +1,20 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">
+        <p>Find Friends<span class="badge" ng-click="showNotifications = !showNotifications">{{user.notification.length}}</span></p>
+        <ol class="notification-list" ng-show="!showNotifications">
+          <li class="notification-item" ng-repeat="item in user.notification">
+            {{item.from}} from {{item.date | date: format: short}} <span class="glyphicon glyphicon-remove" ng-click="removeNotification(item._id)"></span>
+          </li>
+        </ol>
+      </a>
+    </div>
+    <div class="header-right">
+    	<span class="glyphicon glyphicon-bell header-notification"></span>
+      <img src="{{user.image}}" alt="profileImg" class="img-thumbnail header-profileImg">
+	    <p class="navbar-text ">{{user.name}} {{user.lastname}}</p>
+	    <button type="button" class="btn btn-default navbar-btn" ng-click="logOut()">Log out</button>
+    </div>
+  </div>
+</nav>

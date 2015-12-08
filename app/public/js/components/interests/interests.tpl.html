@@ -1,0 +1,18 @@
+
+<div class="interests-input">
+	<h1>Choose you hobby</h1>
+	<input type="text" placeholder="Search" ng-model="searchText">
+</div>
+<div class="interests-view">
+	<div class="interests-item" ng-repeat="interes in interests | filter:searchFilter">
+		<div class="thumbnail">
+	      <img src="/assets/img/{{interes.image}}" alt="Hockey">
+	      <div class="caption">
+	        <h3>{{interes.title}}</h3>
+	        <p>{{interes.description}}</p>
+	        <p><a href="#" class="btn btn-success" role="button" ng-show="!isUserSelected(interes._id)" ng-click="addInteres(interes._id)">Add</a>
+	        <p><a href="#" class="btn btn-danger" role="button" ng-show="isUserSelected(interes._id)" ng-click="removeInteres(interes._id)">Remove</a>
+	      </div>
+	    </div>
+	</div>
+</div>

@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html>
 <head>
 	<title>Friends</title>
@@ -13,6 +12,7 @@
 	<script type="text/javascript" src="/bower_components/angular-route/angular-route.js"></script>
 	<script type="text/javascript" src="/public/app.module.js"></script>
 
+
 	<!-- Main module -->
 	<script type="text/javascript" src="/components/main/mainController.js"></script>
 
@@ -20,7 +20,14 @@
 	<script type="text/javascript" src="/components/login/loginController.js"></script>
 
 	<!-- MAP module -->
-	<script type="text/javascript" src="/components/map/mapController.js"></script>
+	<script type="text/javascript" src="/components/map/mapDirective.js"></script>
+	<!-- HEADER module -->
+	<script type="text/javascript" src="/components/header/headerDirective.js"></script>
+	<!-- FOOTER module -->
+	<script type="text/javascript" src="/components/footer/footerDirective.js"></script>
+	<!-- INTERESTS module -->
+	<script type="text/javascript" src="/components/interests/interestsDirective.js"></script>
+	<script type="text/javascript" src="/components/interests/interestsService.js"></script>
 	
 	<!-- Sign up module -->
 	<script type="text/javascript" src="/components/signup/signupController.js"></script>
@@ -32,6 +39,10 @@
 	<script type="text/javascript" src="/shared/httpConfig.js"></script>
 
 	<script type="text/javascript" src="/public/app.routes.js"></script>
+	
+    <script src='/bower_components/lodash/lodash.js'></script>
+	<script src='/bower_components/angular-simple-logger/dist/angular-simple-logger.js'></script>
+	<script src='/bower_components/angular-google-maps/dist/angular-google-maps.js'></script>
 
 	<!-- end scripts -->
 </head>

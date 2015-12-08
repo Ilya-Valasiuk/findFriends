@@ -6,5 +6,12 @@ module.exports = mongoose.model('User', new Schema({
 	lastname: String,
 	password: String,
 	email: String,
+	latitude: String,
+	longitude: String,
+	interests:  [Schema.Types.ObjectId],
+	notification: [{
+		from:String,
+		date:Date
+			}],
 	image: String
 }));

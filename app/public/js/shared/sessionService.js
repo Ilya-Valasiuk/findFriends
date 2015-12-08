@@ -11,5 +11,8 @@
 				this.isAnonymus = false;
 				this.token = $window.sessionStorage.getItem('user-token');
 			};
+			this.removeToken = function () {
+				$window.sessionStorage.removeItem('user-token');
+			}
 		});
 })()

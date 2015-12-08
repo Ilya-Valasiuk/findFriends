@@ -1,22 +1,20 @@
 var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
+var mongoose  = require('mongoose');
+var ObjectId = mongoose.Types.ObjectId;
 var User   = require('./models/user'); // get our mongoose model
+var Interes   = require('./models/interes'); // get our mongoose model
 
-module.exports = function (app, express) {
+module.exports = function (app, express, io) {
+	/*io.on('connection', function (socket) {
+		console.log('user connected');
 
-	/*app.get('/setup', function (req, res) {
-		var user = new User({
-			name: 'Ilya', 
-			password: 'password',
-			admin: true
+		socket.on('disconnect', function () {
+			console.log('disconnect');
 		});
 
-		user.save(function (err) {
-			if(err) {
-				throw err;
-			}
-
-			console.log('user save successfully');
-			res.json({success: true});
+		socket.on('chat message', function (msg) {
+			console.log('message: ' + msg);
+			io.emit('chat message', msg);
 		});
 	});*/
 
@@ -31,21 +29,25 @@ module.exports = function (app, express) {
 			if(err) {
 				throw err;
 			}
-			console.log(user);
 
 			if(!user) {
 				res.json({success: false, message: 'authenticate failed. User not found'});
 			} else if(user.password !== req.body.password) {
 				res.json({success: false, message: 'authenticate failed. Wrong password'});	
 			} else {
-				var token = jwt.sign(user, app.get('superSecret'), {
-					expiresInMinutes: 1440 // 24 hours 
+				var userInfo = {
+		            _id: user._id,
+		            email: user.email,
+		            name: user.name,
+		            lastname: user.lastname
+		          };
+				var token = jwt.sign(userInfo, app.get('superSecret'), {
+					expiresIn: '1d' 
 				});
 
 				res.json({
 					success: true,
 					message: 'Enjoy',
-					email: user.email,
 					token: token
 				});
 			}
@@ -54,8 +56,6 @@ module.exports = function (app, express) {
 
 	apiRoutes.post('/createUser', function (req, res){
 		var data = req.body;
-		console.log('----------------- CREATE USER -----------------');
-		console.log(data);
 		var user = new User({
 			name: data.name,
 			lastname: data.lastname,
@@ -95,29 +95,185 @@ module.exports = function (app, express) {
 			});
 		}
 	});
+	apiRoutes.get('/user/interests', function(req, res) {
+		User.findOne({email: req.decoded.email}, function (err, user) {
+			if(err) throw err;
 
+			res.json({
+				interests: user.interests
+			})
+		});
+	});
+	apiRoutes.put('/user/interests/:id', function(req, res) {
+		var interesId = req.params.id ? req.params.id : '';
+		interesId = new ObjectId(interesId);
+		User.findOne({email: req.decoded.email}, function (err, user) {
+			if(err) throw err;
+
+			if(~user.interests.indexOf(interesId)) {
+	          res.json({
+	            success: true,
+	            interests: user.interests,
+	            message: 'interes exist'
+	          });
+	        } else {
+	          user.interests.push(interesId);
+	          user.save(function(err, user) {
+	            if(err) throw err;
+	              res.json({
+	              success: true,
+	              interests: user.interests,
+	              message: 'interes added'
+	            });    
+	          });   
+	        }
+	    });
+	});
+	apiRoutes.delete('/user/interests/:id', function(req, res) {
+		var interesId = req.params.id ? req.params.id : '';
+		interesId = new ObjectId(interesId);
+		User.findOne({email: req.decoded.email}, function (err, user) {
+			if(err) throw err;
+    		var index = user.interests.indexOf(interesId);
+          	if(~index) {
+          		 user.interests.splice(index, 1);
+          		  user.save(function(err, user) {
+		            if(err) throw err;
+		              res.json({
+		              success: true,
+		              interests: user.interests,
+		              message: 'interes removed'
+		            });    
+		          });
+          	} else{
+	              res.json({
+		              success: true,
+		              interests: user.interests,
+		              message: 'interes not found'
+		            });   
+	        }
+	    });
+	});
+	apiRoutes.get('/interests', function(req, res) {
+		Interes.find({}, function (err, insterests) {
+			if(err) throw err;
+
+			res.json({
+				interests: insterests
+			})
+		});
+	});
 	apiRoutes.get('/', function(req, res) {
 		res.json({message: 'welcome to api'});
 	});
+	apiRoutes.get('/logout', function(req, res) {
+		res.json({message: 'logout'});
+	});
+
+	apiRoutes.put('/user/position/:coordinates', function(req, res) {
+		var coordinates = req.params.coordinates ? req.params.coordinates : '';
+		coordinates = coordinates.split('&')
+		User.findOne({email: req.decoded.email}, function (err, user) {
+			if(err) throw err;
+
+			user.latitude = coordinates[0];
+			user.longitude = coordinates[1];
+			user.save(function(err, user) {
+			if(err) throw err;
+			  res.json({
+				  success: true,
+				  message: 'coordinates save'
+				});    
+			});   
+	    });
+	});
 
 	apiRoutes.get('/user', function(req, res) {
-		console.log('here');
-		console.log(req.body);
-		console.log(req.headers);
-		User.findOne({
-			email: req.body.email
-		}, function (err, user) {
-			if(err) {
-				throw err;
-			}
-			if(!user) {
-				return res.status(403).send({
-					success: false,
-					message: 'No user find.'
-				})
-			}
-			res.json(user);
+		User.findOne({email: req.decoded.email}, function (err, user) {
+			res.json({
+				userInfo: user
+			});
 		});
+	});
+
+	apiRoutes.get('/search-users', function(req, res) {
+		User.findOne({email: req.decoded.email}, function (err, user) {
+			if(err) throw err;
+			var interesIds = user.interests;
+			User.find({'interests': {
+				"$in": interesIds
+			}}, function (err, users) {
+				if(users.length) {
+					res.json({
+			            success: true,
+			            users: users
+			          }); 	
+				} else {
+					res.json({
+			            success: false,
+			            message: 'users not found'
+			          }); 
+				}
+			})
+		});
+	});
+
+	apiRoutes.put('/user/notification/:id', function(req, res) {
+		var toUserId = req.params.id;
+
+		User.findOne({_id: toUserId}, function (err, user) {
+			if(err) throw err;	
+
+			if(user) {
+				user.notification.push({from: req.decoded.email, date: new Date()});
+				user.save(function(err, user) {
+					console.log(user);
+					if(err) throw err;
+					res.json({
+						success: true,
+						message: 'notification sent'
+					});
+				});
+			} else {
+				res.json({
+					success: false,
+					message: 'some error'
+				});
+			}
+		})
+	});
+	function findWithAttr(array, attr, value) {
+	    for(var i = 0; i < array.length; i += 1) {
+	        if(array[i][attr] == value) {
+	            return i;
+	        }
+	    }
+	}
+	apiRoutes.delete('/user/notification/:id', function(req, res) {
+		var id = req.params.id;
+
+		User.findOne({email: req.decoded.email}, function (err, user) {
+			if(err) throw err;	
+
+			if(user) {
+				var arrOfNot = user.notification;
+				var index = findWithAttr(arrOfNot, '_id', id);
+				user.notification.splice(index, 1);
+				user.save(function(err, user) {
+					if(err) throw err;
+					res.json({
+						success: true,
+						userInfo: user,
+						message: 'notification delete'
+					});
+				});
+			} else {
+				res.json({
+					success: false,
+					message: 'some error'
+				});
+			}
+		})
 	});
 
 	apiRoutes.get('/users', function(req, res) {
@@ -132,5 +288,6 @@ module.exports = function (app, express) {
 	app.get('*', function(req, res) {
 	    res.sendFile(__dirname + '/public/index.html');
 	});
+
 	
 }

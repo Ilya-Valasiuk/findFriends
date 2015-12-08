@@ -2,3 +2,50 @@
 	max-width: 600px;
 	margin: 0 auto;
 }
+#map {
+	height: 500px
+}
+.angular-google-map-container { height: 400px; }
+
+.header-right {
+	display: flex;
+	align-items: center;
+}
+
+.header-notification {
+	margin-left: auto;
+	font-size: 18px;
+}
+.header-notification:hover{
+	cursor: pointer;
+}
+.header-profileImg {
+	width: 40px;
+	height: 40px;
+	margin: -20px 0 -20px 15px;
+}
+
+.interests-input {
+	text-align: center;
+}
+.interests-view{
+	display: flex;
+	flex-wrap: wrap;
+	padding: 15px 0;
+}
+
+.interests-item {
+	width: 24%;
+	margin-right: 1%;
+}
+
+.notification-list {
+	background-color: white;
+    list-style: none;
+    padding-left: 0;
+}
+.notification-item {
+	line-height: 23px;
+    border: 1px solid black;
+    padding: 5px 10px;
+}

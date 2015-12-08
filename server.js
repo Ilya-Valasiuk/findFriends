@@ -1,8 +1,10 @@
 var express = require('express');
 var app = express();
+var http = require('http').Server(app);
 var bodyParser  = require('body-parser');
 var morgan      = require('morgan');
 var mongoose    = require('mongoose');
+var io = require('socket.io')(http);
 
 var secret = require('./app/config/secret'); // get our secret
 var database = require('./app/config/database'); // get our database config
@@ -34,8 +36,11 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(morgan('dev'));
 
 /*Init routes */
-require('./app/routes.js')(app, express);
+require('./app/routes.js')(app, express, io);
 
-app.listen(port);
-console.log('Magic happens at http://localhost:' + port);
+// app.listen(port);
+http.listen(port, function () {
+	console.log('app start on ' + port);
+});
+// console.log('Magic happens at http://localhost:' + port);
 

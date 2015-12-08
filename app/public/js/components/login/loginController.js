@@ -14,6 +14,7 @@
 						if(res.data.success) {
 							$scope.$apply(function() {
 								userService.setDataInStorage(res.data);
+								userService.updateUser();
 								$location.path('/');	
 							});
 						}

@@ -1,1 +1,1 @@
-angular.module('FriendsApp', ['app.main', 'app.login', 'app.map', 'app.signup',  'app.routing']);
+angular.module('FriendsApp', ['app.main', 'app.login', 'app.map', 'app.signup',  'app.routing', 'app.header', 'app.footer', 'app.interests', 'uiGmapgoogle-maps']);
