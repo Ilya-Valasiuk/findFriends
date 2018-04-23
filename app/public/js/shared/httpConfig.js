@@ -20,7 +20,7 @@
 		angular.module('uiGmapgoogle-maps', [])
 		.config(function (uiGmapGoogleMapApiProvider) {
 			uiGmapGoogleMapApiProvider.configure({
-	           key: 'AIzaSyDFrymUqlJ2J5OkB1PfMkFk6N9K7TGxbGQ',
+	           key: 'AIzaSyBlQcKxukgknYt3IFbF2NcdrdQlzY21P44',
 		        v: '3.20', //defaults to latest 3.X anyhow
 		        libraries: 'weather,geometry,visualization'
 		    });
