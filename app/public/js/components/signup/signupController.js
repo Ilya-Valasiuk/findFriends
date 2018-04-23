@@ -8,7 +8,7 @@
 
 			$scope.click = function () {
 				console.log($scope);
-				debugger
+				// debugger
 			}
 
 			$scope.reset = _initUser;
